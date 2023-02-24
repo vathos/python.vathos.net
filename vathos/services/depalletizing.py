@@ -15,11 +15,42 @@ import requests
 
 from vathos.products import get_product
 from vathos.configurations import get_configuration
+from vathos.files import upload_files
 
 
-def train_product(product_id, calibration_image_path, token):
+def train_product(product_id, calibration_image_path, token, device_id=None):
   """Starts a training."""
-  pass
+  # upload calib image id
+  calib_image_id = upload_files([calibration_image_path], token)[0]
+
+  train_data = {
+      'workflow':
+          'votenet',
+      'product':
+          product_id,
+      'device':
+          device_id,
+      'tasks': [{
+          'service': 'extrinsic.calibration.vathos.net',
+          'parameters': {
+              'planeImage': calib_image_id
+          }
+      }, {
+          'service': 'rendering.votenet.detection.vathos.net'
+      }, {
+          'service': 'train.votenet.detection.vathos.net'
+      }, {
+          'service': 'conversion.trt.vathos.net'
+      }]
+  }
+
+  post_task_response = requests.post(
+      'https://staging.api.gke.vathos.net/v1/compositetasks',
+      json=train_data,
+      headers={'Authorization': f'Bearer {token}'},
+      timeout=5)
+
+  return post_task_response.json()['_id']
 
 
 def run_inference(product_id, test_image_path, token):

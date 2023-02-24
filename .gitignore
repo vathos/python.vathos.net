@@ -1,0 +1,11 @@
+cpp/build
+*.pyc
+*.so
+build
+dist
+vathos.egg-info
+env
+test.xml
+codeclimate.json
+docstyle.txt
+.vscode

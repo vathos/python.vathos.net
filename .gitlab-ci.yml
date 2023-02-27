@@ -1,5 +1,5 @@
 stages:
-  - release
+  - build
 
 build_amd64_release:
   stage: build

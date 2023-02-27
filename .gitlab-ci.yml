@@ -1,18 +1,5 @@
 stages:
-  - build
   - release
-
-build_amd64:
-  stage: build
-  only:
-    - develop
-  script:
-    - ./setup clean
-    - ./setup sdist bdist_wheel --plat-name linux_x86_64
-  artifacts:
-    expire_in: 1 year
-    paths:
-      - "dist/*.whl"
 
 build_amd64_release:
   stage: build
@@ -32,4 +19,3 @@ build_amd64_release:
       - "dist/*.whl"
     reports:
       dotenv: build_release_amd64.env
-      

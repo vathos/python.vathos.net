@@ -1,0 +1,35 @@
+stages:
+  - build
+  - release
+
+build_amd64:
+  stage: build
+  only:
+    - develop
+  script:
+    - ./setup clean
+    - ./setup sdist bdist_wheel --plat-name linux_x86_64
+  artifacts:
+    expire_in: 1 year
+    paths:
+      - "dist/*.whl"
+
+build_amd64_release:
+  stage: build
+  only:
+    - tags
+  script:
+    - sed -i s/0.0.0-latest/$CI_COMMIT_TAG/g ./setup
+    - sed -i s/0.0.0-latest/$CI_COMMIT_TAG/g ./vathos/__init__.py
+    - ./setup clean
+    - ./setup sdist bdist_wheel --plat-name linux_x86_64
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --verbose --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*.whl
+  after_script:
+    - echo "BUILD_AMD_JOB_ID=$CI_JOB_ID" >> build_release_amd64.env
+  artifacts:
+    expire_in: never
+    paths:
+      - "dist/*.whl"
+    reports:
+      dotenv: build_release_amd64.env
+      

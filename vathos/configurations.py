@@ -9,10 +9,12 @@
 
 import requests
 
+from vathos import BASE_URL
+
 
 def get_configuration(product_id, service, token):
   """Get the most recent inference configuration."""
-  url = f'https://staging.api.gke.vathos.net/v1/configurations?product={product_id}&service={service}'
+  url = f'{BASE_URL}/configurations?product={product_id}&service={service}'
   response = requests.get(url,
                           headers={'Authorization': 'Bearer ' + token},
                           timeout=5)

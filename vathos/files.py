@@ -10,13 +10,15 @@
 
 import requests
 
+from vathos import BASE_URL
+
 
 def upload_files(file_list, token):
   """Uploads one or multiple files."""
   upload_body = {}
   for i, file in enumerate(file_list):
     upload_body[f'file_{str(i).zfill(2)}'] = open(file, 'rb')
-  upload_response = requests.post('https://staging.api.gke.vathos.net/v1/blobs',
+  upload_response = requests.post(f'{BASE_URL}/blobs',
                                   files=upload_body,
                                   headers={'Authorization': f'Bearer {token}'},
                                   timeout=120)

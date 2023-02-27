@@ -13,6 +13,7 @@ from time import perf_counter
 
 import requests
 
+from vathos import BASE_URL
 from vathos.products import get_product
 from vathos.configurations import get_configuration
 from vathos.files import upload_files
@@ -45,7 +46,7 @@ def train_product(product_id, calibration_image_path, token, device_id=None):
   }
 
   post_task_response = requests.post(
-      'https://staging.api.gke.vathos.net/v1/compositetasks',
+      f'{BASE_URL}/compositetasks',
       json=train_data,
       headers={'Authorization': f'Bearer {token}'},
       timeout=5)
@@ -60,7 +61,7 @@ def run_inference(product_id, test_image_path, token):
                                     token)
 
   # get depth image for visualization purposes and convert to m
-  inference_url = 'https://staging.api.gke.vathos.net/v1/workflows/votenet'
+  inference_url = f'{BASE_URL}/workflows/votenet'
   files = {'files': open(test_image_path, 'rb')}
   values = {
       'product': json.dumps(product),

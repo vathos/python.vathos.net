@@ -13,6 +13,7 @@ import logging
 
 import requests
 
+from vathos import BASE_URL
 from vathos.files import upload_files
 
 
@@ -23,7 +24,7 @@ def create_product(name, model_file_name, token):
 
   # create product
   post_product_response = requests.post(
-      'https://staging.api.gke.vathos.net/v1/products',
+      f'{BASE_URL}/products',
       json={
           'name': name,
           'models': [model_id]
@@ -35,7 +36,7 @@ def create_product(name, model_file_name, token):
 
   # run the model analysis task
   post_task_response = requests.post(
-      'https://staging.api.gke.vathos.net/v1/tasks',
+      f'{BASE_URL}/tasks',
       json={
           'service': 'model.analysis.vathos.net',
           'product': product['_id']
@@ -50,7 +51,7 @@ def create_product(name, model_file_name, token):
     logging.debug('Waiting for task to finish...')
     sleep(5.0)
     task_status_request = requests.get(
-        f'https://staging.api.gke.vathos.net/v1/tasks/{task["_id"]}',
+        f'{BASE_URL}/tasks/{task["_id"]}',
         headers={'Authorization': f'Bearer {token}'},
         timeout=5)
     task_data = task_status_request.json()
@@ -66,7 +67,8 @@ def create_product(name, model_file_name, token):
 
 def get_product(product_id, token):
   """Downloads product data."""
-  url = f'https://staging.api.gke.vathos.net/v1/products/{product_id}?%24populate%5B0%5D=grips&%24populate%5B1%5D=states&%24populate%5B1%5D=camera'
+  url = f'{BASE_URL}/products/{product_id}?%24populate%5B0%5D=grips' \
+    '&%24populate%5B1%5D=states&%24populate%5B1%5D=camera'
   product_response = requests.get(url,
                                   headers={'Authorization': 'Bearer ' + token},
                                   timeout=5)

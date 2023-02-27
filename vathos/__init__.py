@@ -20,3 +20,9 @@ logging.basicConfig(
     '[%(filename)s:%(lineno)d] %(message)s',
     datefmt='%Y-%m-%d:%H:%M:%S',
     level=os.environ.get('LOG_LEVEL', 'INFO'))
+
+
+BASE_URL = os.environ.get('VATHOS_BASE_URL',
+                          'https://staging.api.gke.vathos.net/v1').rstrip('/')
+
+logging.debug('Connecting to %s', BASE_URL)

@@ -7,6 +7,8 @@
 #
 ################################################################################
 
+from vathos import BASE_URL
+
 
 def handeye_calibration(image_dir, poses, projection_matrix, pattern_sidelength,
                         pattern_size, eye2hand):
@@ -14,8 +16,6 @@ def handeye_calibration(image_dir, poses, projection_matrix, pattern_sidelength,
   
   Args:
     image_dir (str): path of a folder containing the calibration images
-    poses (str):
-
-  
+    poses (str):  
   """
-  pass
+  raise NotImplementedError()

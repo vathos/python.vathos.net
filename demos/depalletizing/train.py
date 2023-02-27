@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
   # define camera parameters
   projection_matrix = np.array(
-      [[1779.80041, 0, 986.39929], [0, 1782.1018, 986.39929], [0, 0, 1]],
+      [[1779.80041, 0, 986.39929], [0, 1782.1018, 597.44458], [0, 0, 1]],
       dtype='f')
   image_size = (1944, 1200)
   image_range = (0.1, 2.0)  # in meters

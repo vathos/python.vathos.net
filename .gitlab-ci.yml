@@ -20,5 +20,4 @@ build_amd64_release:
     expire_in: never
     paths:
       - "dist/*.whl"
-    reports:
-      dotenv: build_release_amd64.env
+      

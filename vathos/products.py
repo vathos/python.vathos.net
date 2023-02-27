@@ -17,17 +17,28 @@ from vathos import BASE_URL
 from vathos.files import upload_files
 
 
-def create_product(name, model_file_name, token):
+def create_product(name, model_file_name, projection_matrix, token):
   """Creates a product and attaches a 3d model file and camera to it."""
   # upload model file
   model_id = upload_files([model_file_name], token)[0]
+
+  # create camera
+  post_camera_response = requests.post(
+      f'{BASE_URL}/cameras',
+      json={
+          'intrinsics': projection_matrix.astype('f').flatten('F')
+      },
+      headers={'Authorization': f'Bearer {token}'},
+      timeout=5)
+  camera = post_camera_response.json()
 
   # create product
   post_product_response = requests.post(
       f'{BASE_URL}/products',
       json={
           'name': name,
-          'models': [model_id]
+          'models': [model_id],
+          'camera': camera['_id']
       },
       headers={'Authorization': f'Bearer {token}'},
       timeout=5)

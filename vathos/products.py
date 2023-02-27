@@ -17,7 +17,8 @@ from vathos import BASE_URL
 from vathos.files import upload_files
 
 
-def create_product(name, model_file_name, projection_matrix, token):
+def create_product(name, model_file_name, unit, projection_matrix, image_size,
+                   image_range, token):
   """Creates a product and attaches a 3d model file and camera to it."""
   # upload model file
   model_id = upload_files([model_file_name], token)[0]
@@ -26,7 +27,15 @@ def create_product(name, model_file_name, projection_matrix, token):
   post_camera_response = requests.post(
       f'{BASE_URL}/cameras',
       json={
-          'intrinsics': projection_matrix.astype('f').flatten('F')
+          'intrinsics': projection_matrix.astype('f').flatten('F').tolist(),
+          'size': {
+              'width': image_size[0],
+              'height': image_size[1]
+          },
+          'range': {
+              'min': image_range[0],
+              'max': image_range[1]
+          }
       },
       headers={'Authorization': f'Bearer {token}'},
       timeout=5)
@@ -38,6 +47,7 @@ def create_product(name, model_file_name, projection_matrix, token):
       json={
           'name': name,
           'models': [model_id],
+          'unit': unit,
           'camera': camera['_id']
       },
       headers={'Authorization': f'Bearer {token}'},
@@ -84,3 +94,9 @@ def get_product(product_id, token):
                                   headers={'Authorization': 'Bearer ' + token},
                                   timeout=5)
   return product_response.json()
+
+
+# FIXME: do we want to assign grips to states directly or to the product or
+# both?
+def assign_grips():
+  pass

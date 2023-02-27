@@ -22,7 +22,7 @@ from vathos.files import upload_files
 def train_product(product_id, calibration_image_path, token, device_id=None):
   """Starts a training."""
   # upload calib image id
-  calib_image_id = upload_files([calibration_image_path], token)[0]
+  calib_image = upload_files([calibration_image_path], token)[0]
 
   train_data = {
       'workflow':
@@ -34,7 +34,7 @@ def train_product(product_id, calibration_image_path, token, device_id=None):
       'tasks': [{
           'service': 'extrinsic.calibration.vathos.net',
           'parameters': {
-              'planeImage': calib_image_id
+              'planeImage': calib_image['_id']
           }
       }, {
           'service': 'rendering.votenet.detection.vathos.net'

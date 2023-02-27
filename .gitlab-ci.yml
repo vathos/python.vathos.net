@@ -4,7 +4,7 @@ stages:
 before_script:
   - virtualenv -p python3 env
   - . env/bin/activate
-  - pip install -r requirements.txt
+  - pip install twine
 
 build_amd64_release:
   stage: build
@@ -20,4 +20,3 @@ build_amd64_release:
     expire_in: never
     paths:
       - "dist/*.whl"
-      

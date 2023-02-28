@@ -20,7 +20,23 @@ from vathos.files import upload_files
 
 
 def train_product(product_id, calibration_image_path, token, device_id=None):
-  """Starts a training."""
+  """Starts a training.
+  
+  Args: 
+    product_id (str): id of the product to start the training for. A product
+      is created with the function `create_product()` from the module
+      `vathos.products`.
+    calibration_image_path (str): path of an image for extrinsic calibration.
+    The image must be a depth image of the plane the detected objects will rest
+    upon during inference. It is converted to millimeters, then cast to a short
+    integer array whose LSB and MSB are put into the red respectively green
+    channel of an 8-bit RGB image before storing it as a PNG-compressed file.
+    token (str): API access token
+
+  Returns:
+    str: id of the training task
+    
+  """
   # upload calib image id
   calib_image = upload_files([calibration_image_path], token)[0]
 
@@ -55,7 +71,22 @@ def train_product(product_id, calibration_image_path, token, device_id=None):
 
 
 def run_inference(product_id, test_image_path, token):
-  """Runs an inference request."""
+  """Runs an inference request.
+  
+  Args: 
+    product_id (str): id of the product to start the training for. A product
+      is created with the function `create_product()` from the module
+      `vathos.products`.
+    test_image_path (str): path of image to run inference on. This image
+    must measure the depth of each pixe in millimeters, where each pixel is
+    stored as a short integer, whose LSB and MSB are packed into the red
+    respectively green channel of an 8-bit RGB image before storing it as a
+    PNG-compressed file.
+    token (str): API access token
+
+  Returns:
+    list: detected objects  
+  """
   product = get_product(product_id, token)
   configuration = get_configuration(product_id, 'votenet.workflows.vathos.net',
                                     token)

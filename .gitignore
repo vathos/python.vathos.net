@@ -9,3 +9,4 @@ test.xml
 codeclimate.json
 docstyle.txt
 .vscode
+*.pickle

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright (c) 2021, Vathos GmbH
+# Copyright (c) 2021-2023, Vathos GmbH
 #
 # All rights reserved.
 #

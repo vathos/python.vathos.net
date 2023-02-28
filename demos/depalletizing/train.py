@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 ###############################################################################
 #
-# Copyright (c) 2021, Vathos GmbH
+# Copyright (c) 2021-2023, Vathos GmbH
 #
 # All rights reserved.
 #
 ###############################################################################
 
 import os
+import pickle
 
 import numpy as np
 
@@ -29,9 +30,13 @@ if __name__ == '__main__':
   image_range = (0.1, 2.0)  # in meters
 
   # create a product
-  product = create_product('Test product 2',
-                           './demos/depalletizing/cad_model.obj', 'mm',
-                           projection_matrix, image_size, image_range, token)
+  product_id = create_product('Python lib test',
+                              './demos/depalletizing/cad_model.obj', 'mm',
+                              projection_matrix, image_size, image_range, token)
+  
+  # save its id for inference later
+  with open('product.pickle', 'wb') as fid:
+    pickle.dump(product_id, fid)
 
   # start training
-  train_product(product['_id'], './demos/depalletizing/calibration.png', token)
+  train_product(product_id, './demos/depalletizing/calibration.png', token)

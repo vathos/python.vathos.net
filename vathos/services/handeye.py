@@ -67,8 +67,26 @@ def handeye_calibration(poses,
   """Runs a hand-eye calibration.
   
   Args:
-    image_dir (str): path of a folder containing the calibration images
-    poses (str): path to a CSV file containing the pos
+    poses (str): path to a CSV file containing the poses and a reference to the
+      associated image. Each row consists of 17 columns. The first column
+      contains the path of the image on disk. The following 16 columns store
+      the pose of the robot when the image was captured as homogenous
+      $4\\times4$ matrix in colum-major ordering.
+    projection_matrix (numpy.ndarray): a $3\\times 3$ projection matrix of the 
+      used camera
+    pattern_sidelength (float): length of squares in ther pattern in meters
+    pattern_size (tuple): numer of inner corners of the patterns in horizontal
+      and vertical direction
+    eye_in_hand: True if the camera is mounted on the end-effector of the robot,
+      False for static cameras.
+    token (str): API access token
+    session (str): optional session id under which all calibration images are
+      stored
+  
+  Returns:
+    numpy.ndarray: homogenous $4\\times 4$ matrix of the transformation between
+      the camera and flange coordinate system (if `eye_in_hand==True`), or the
+      camera coordinate system and a fixed robot base (if `eye_in_hand==False`)
   """
   if session is None:
     session = 'handeye_' + datetime.now().isoformat()

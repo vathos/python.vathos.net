@@ -2,10 +2,11 @@
 
 ## Installation
 
-## Dependencies
+### Dependencies
 
 - [Python](https://www.python.org/) version 3.8 or higher
 - [requests](https://requests.readthedocs.io/en/latest/)
+- [numpy](https://numpy.org/)
 - [mayavi](https://docs.enthought.com/mayavi/mayavi/) (optional for 3d visualization) 
 
 ### Build from source

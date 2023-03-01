@@ -33,7 +33,7 @@ if __name__ == '__main__':
   product_id = create_product('Python lib test',
                               './demos/depalletizing/cad_model.obj', 'mm',
                               projection_matrix, image_size, image_range, token)
-  
+
   # save its id for inference later
   with open('product.pickle', 'wb') as fid:
     pickle.dump(product_id, fid)

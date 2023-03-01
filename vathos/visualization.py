@@ -67,16 +67,18 @@ def visualize_detections(mesh_path, scale, test_image_path, projection_matrix,
 
   for detection in detections:
 
-    # pose is in camera coordinates
-    pose = np.reshape(np.array(detection['frame'], dtype='f'), (4, 4), 'F')
-    vertices = mesh.vertices @ pose[0:3, 0:3].transpose() + np.ones(
-        mesh.vertices.shape) @ np.diag(pose[0:3, 3])
+    # frame is missing from the object if ICP has failed
+    if 'frame' in detection:
+      # pose is in camera coordinates
+      pose = np.reshape(np.array(detection['frame'], dtype='f'), (4, 4), 'F')
+      vertices = mesh.vertices @ pose[0:3, 0:3].transpose() + np.ones(
+          mesh.vertices.shape) @ np.diag(pose[0:3, 3])
 
-    mlab.triangular_mesh(vertices[:, 0],
-                         vertices[:, 1],
-                         vertices[:, 2],
-                         mesh.faces,
-                         color=(0.6, 0.2, 0.2),
-                         opacity=0.5)
+      mlab.triangular_mesh(vertices[:, 0],
+                          vertices[:, 1],
+                          vertices[:, 2],
+                          mesh.faces,
+                          color=(0.6, 0.2, 0.2),
+                          opacity=0.5)
 
   mlab.show()

@@ -9,6 +9,12 @@
 - [numpy](https://numpy.org/)
 - [mayavi](https://docs.enthought.com/mayavi/mayavi/) (optional for 3d visualization) 
 
+Note that if you would like to make use of the optional visualization modules, you will have to resolve the latter dependency manually:
+
+```
+pip install pyqt5 mayavi
+```
+
 ### Build from source
 
 To get a nightly build, first, clone this repository:

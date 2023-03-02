@@ -9,11 +9,14 @@
 ###############################################################################
 
 import os
+from pathlib import Path
 
 from setuptools import setup, Command, find_packages
 
 VERSION = '0.0.0-latest'
 
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 class CleanCommand(Command):
   """
@@ -36,9 +39,11 @@ setup(name='vathos',
       description='Vathos Python API.',
       author='Jonathan Balzer',
       author_email='jonathan.balzer@vathos.net',
-      url='https://www.vathos-robotics.com',
+      url='https://github.com/vathos/python.vathos.net',
       packages=find_packages(),
-      install_requires=['requests', 'numpy'],
+      install_requires=['requests>=2.27.0', 'numpy>=1.22.0'],
       scripts=[],
       include_package_data=True,
+      long_description=long_description,
+      long_description_content_type='text/markdown',
       cmdclass={'clean': CleanCommand})

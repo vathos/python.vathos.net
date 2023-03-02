@@ -49,6 +49,7 @@ def create_product(name, model_file_name, unit, projection_matrix, image_size,
   post_camera_response = requests.post(
       f'{BASE_URL}/cameras',
       json={
+          'cameraType': 'manual',
           'intrinsics': projection_matrix.astype('f').flatten('F').tolist(),
           'size': {
               'width': image_size[0],

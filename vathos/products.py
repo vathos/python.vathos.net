@@ -26,7 +26,7 @@ def create_product(name, model_file_name, unit, projection_matrix, image_size,
   Args:
     name (str): human-readable name for the new product
     model_file_name (str): path to a CAD model file on disk. Currently, the only
-      support format is Wavefront OBJ.
+      supported format is Wavefront OBJ.
     unit (str): unit in which the CAD model is meaured. Must be one of
       `['m', 'dm', 'cm', 'mm']`.
     projection_matrix (numpy.ndarray): a $3\\times 3$ projection matrix of the 

@@ -27,10 +27,11 @@ def train_product(product_id, calibration_image_path, token, device_id=None):
       is created with the function `create_product()` from the module
       `vathos.products`.
     calibration_image_path (str): path of an image for extrinsic calibration.
-    The image must be a depth image of the plane the detected objects will rest
-    upon during inference. It is converted to millimeters, then cast to a short
-    integer array whose LSB and MSB are put into the red respectively green
-    channel of an 8-bit RGB image before storing it as a PNG-compressed file.
+      The image must be a depth image of the plane the detected objects will
+      rest upon during inference. It is converted to millimeters, then cast to a
+      short integer array whose LSB and MSB are put into the red respectively
+      green channel of an 8-bit RGB image before storing it as a PNG-compressed
+      file.
     token (str): API access token
 
   Returns:

@@ -71,14 +71,14 @@ def handeye_calibration(poses,
       associated image. Each row consists of 17 columns. The first column
       contains the path of the image on disk. The following 16 columns store
       the pose of the robot when the image was captured as homogenous
-      $4\\times4$ matrix in colum-major ordering.
+      $4\\times4$ matrix in column-major ordering.
     projection_matrix (numpy.ndarray): a $3\\times 3$ projection matrix of the 
       used camera
-    pattern_sidelength (float): length of squares in ther pattern in meters
-    pattern_size (tuple): numer of inner corners of the patterns in horizontal
+    pattern_sidelength (float): length of squares in the pattern in meters
+    pattern_size (tuple): number of inner corners of the pattern in horizontal
       and vertical direction
     eye_in_hand: True if the camera is mounted on the end-effector of the robot,
-      False for static cameras.
+      False for static cameras
     token (str): API access token
     session (str): optional session id under which all calibration images are
       stored

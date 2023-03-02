@@ -7,12 +7,14 @@
 - [Python](https://www.python.org/) version 3.8 or higher
 - [requests](https://requests.readthedocs.io/en/latest/)
 - [numpy](https://numpy.org/)
-- [mayavi](https://docs.enthought.com/mayavi/mayavi/) (optional for 3d visualization) 
+- [mayavi](https://docs.enthought.com/mayavi/mayavi/) (optional)
+- [trimesh](https://trimsh.org/trimesh.html) (optional)
 
-Note that if you would like to make use of the optional visualization modules, you will have to resolve the latter dependency manually:
+Note that if you would like to make use of the optional visualization modules,
+you will have to resolve the latter two dependencies manually:
 
 ```
-pip install pyqt5 mayavi
+pip install pyqt5 mayavi trimesh
 ```
 
 ### Build from source
@@ -45,7 +47,7 @@ pip install vathos
 
 ## Quick start
 
-[Get in touch with us](https://www.vathos-robotics.com) to receive a test account. Make sure your client id and secret are exported to the two eponymous environment varibales `CLIENT_ID` and `CLIENT_SECRET`. Now you are ready to run the examples in the [demos folder](./demos/).
+[Get in touch with us](https://www.vathos-robotics.com) to receive a test account. Make sure your client id and secret are exported to the two eponymous environment varibales `CLIENT_ID` and `CLIENT_SECRET`. Now you are ready to run the examples in the [demos folder](https://github.com/vathos/python.vathos.net/tree/main/demos).
 
 ## Further reading
 

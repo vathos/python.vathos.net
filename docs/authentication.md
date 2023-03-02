@@ -35,7 +35,7 @@ Users who are natural persons require four different credentials for authenticat
 
 **Returns:**
  
- - <b>`str`</b>:  A bearer token which must be passed in the authorization header with  every request made to the REST API. 
+ - <b>`str`</b>:  bearer token which must be passed in the authorization header with   every request made to the REST API 
 
 
 ---
@@ -63,6 +63,6 @@ A service account is an account not associated with a person but rather a device
 
 **Returns:**
  
- - <b>`str`</b>:  A bearer token which must be passed in the authorization header with  every request made to the REST API. 
+ - <b>`str`</b>:  bearer token which must be passed in the authorization header with  every request made to the REST API 
 
 

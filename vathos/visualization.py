@@ -21,6 +21,8 @@ except ImportError:
   VISUALIZATION_ENABLED = False
   logging.warning('Optional dependencies for 3d visualization not installed!')
 
+# conversion to meters
+UNIT_CONVERSION_FACTOR = {'mm': 0.001, 'cm': 0.01, 'dm': 0.1, 'm': 1.0}
 
 def unpack_short(rgb):
   """Unpacks two byte channels into a single channel of type short."""
@@ -47,15 +49,28 @@ def backproject(depth, K):
   return pcl
 
 
-def visualize_detections(mesh_path, scale, test_image_path, projection_matrix,
-                         detections):
-  """Visualizes a point cloud and detections."""
+def visualize_detections(model_file_name, unit, test_image_path,
+                         projection_matrix, detections):
+  """Visualizes a point cloud and detections.
+  
+  This function is only executed if mayavi and trimesh are installed.
+
+  Args:
+    model_file_name (str): path to a CAD model file on disk. Currently, the only
+      supported format is Wavefront OBJ.
+    unit (str): unit in which the CAD model is meaured. Must be one of
+      `['m', 'dm', 'cm', 'mm']`.
+    test_image_path (str): path of the depth image used in inference
+    projection_matrix (numpy.ndarray): a $3\\times 3$ projection matrix of the 
+      used camera
+    detections (list): inferred object poses      
+  """
   if not VISUALIZATION_ENABLED:
     logging.warning('Visualization is disabled.')
     return
 
-  mesh = trimesh.load(mesh_path, file_type='OBJ', color=(0.5, 0.5, 0.5))
-  mesh.apply_scale(scale)
+  mesh = trimesh.load(model_file_name, file_type='OBJ', color=(0.5, 0.5, 0.5))
+  mesh.apply_scale(UNIT_CONVERSION_FACTOR[unit])
 
   depth_img_compressed = imread(test_image_path)
 
@@ -75,10 +90,10 @@ def visualize_detections(mesh_path, scale, test_image_path, projection_matrix,
           mesh.vertices.shape) @ np.diag(pose[0:3, 3])
 
       mlab.triangular_mesh(vertices[:, 0],
-                          vertices[:, 1],
-                          vertices[:, 2],
-                          mesh.faces,
-                          color=(0.6, 0.2, 0.2),
-                          opacity=0.5)
+                           vertices[:, 1],
+                           vertices[:, 2],
+                           mesh.faces,
+                           color=(0.6, 0.2, 0.2),
+                           opacity=0.5)
 
   mlab.show()

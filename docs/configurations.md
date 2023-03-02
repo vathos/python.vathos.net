@@ -21,14 +21,14 @@
 get_configuration(product_id, service, token)
 ```
 
-Get the most recent inference configuration. 
+Gets the most recent inference configuration. 
 
 
 
 **Args:**
  
  - <b>`product_id`</b> (str):  id of the product for which the configuration was created 
- - <b>`service`</b> (str):  name of the inference service for which configuraton was  created 
+ - <b>`service`</b> (str):  name of the inference service for which the configuraton was  created 
  - <b>`token`</b> (str):  API access token 
 
 

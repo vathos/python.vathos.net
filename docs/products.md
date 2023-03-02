@@ -35,7 +35,7 @@ Creates a product and attaches a 3d model file and camera to it.
 **Args:**
  
  - <b>`name`</b> (str):  human-readable name for the new product 
- - <b>`model_file_name`</b> (str):  path to a CAD model file on disk. Currently, the only  support format is Wavefront OBJ. 
+ - <b>`model_file_name`</b> (str):  path to a CAD model file on disk. Currently, the only  supported format is Wavefront OBJ. 
  - <b>`unit`</b> (str):  unit in which the CAD model is meaured. Must be one of  `['m', 'dm', 'cm', 'mm']`. 
  - <b>`projection_matrix`</b> (numpy.ndarray):  a $3\times 3$ projection matrix of the   used camera 
  - <b>`image_size`</b> (tuple):  image width and height in number of pixels 
@@ -51,7 +51,7 @@ Creates a product and attaches a 3d model file and camera to it.
 
 ---
 
-<a href="../vathos/products.py#L111"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../vathos/products.py#L112"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `get_product`
 

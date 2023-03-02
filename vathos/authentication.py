@@ -31,8 +31,8 @@ def get_client_token(client_id, client_secret, username, password):
     password: (str): user password
 
   Returns:
-    str: A bearer token which must be passed in the authorization header with
-      every request made to the REST API.
+    str: bearer token which must be passed in the authorization header with 
+      every request made to the REST API
   """
   token_response = requests.post(
       'https://auth.gke.vathos.net/auth/realms/picking/protocol' \
@@ -61,8 +61,8 @@ def get_service_account_token(client_id, client_secret):
     client_secret (str): client passphrase
 
   Returns:
-    str: A bearer token which must be passed in the authorization header with
-      every request made to the REST API.
+    str: bearer token which must be passed in the authorization header with
+      every request made to the REST API
   """
   token_response = requests.post(
       'https://auth.gke.vathos.net/auth/realms/picking/protocol' \

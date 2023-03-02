@@ -28,7 +28,7 @@ Starts a training.
 **Args:**
  
  - <b>`product_id`</b> (str):  id of the product to start the training for. A product  is created with the function `create_product()` from the module  `vathos.products`. 
- - <b>`calibration_image_path`</b> (str):  path of an image for extrinsic calibration. The image must be a depth image of the plane the detected objects will rest upon during inference. It is converted to millimeters, then cast to a short integer array whose LSB and MSB are put into the red respectively green channel of an 8-bit RGB image before storing it as a PNG-compressed file. 
+ - <b>`calibration_image_path`</b> (str):  path of an image for extrinsic calibration.  The image must be a depth image of the plane the detected objects will  rest upon during inference. It is converted to millimeters, then cast to a  short integer array whose LSB and MSB are put into the red respectively  green channel of an 8-bit RGB image before storing it as a PNG-compressed  file. 
  - <b>`token`</b> (str):  API access token 
 
 
@@ -42,7 +42,7 @@ Starts a training.
 
 ---
 
-<a href="../vathos/services/depalletizing.py#L73"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../vathos/services/depalletizing.py#L74"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `run_inference`
 

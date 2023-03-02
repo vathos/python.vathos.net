@@ -49,5 +49,5 @@ pip install vathos
 
 ## Further reading
 
-- [API documentation](./docs/)
+- [API documentation](https://github.com/vathos/python.vathos.net/tree/main/docs)
 - [Developers Guide](https://docs.vathos.net/guides)

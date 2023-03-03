@@ -53,7 +53,6 @@ def backproject(depth, K):
   return pcl
 
 
-#                         projection_matrix, detections):
 def visualize_detections(detections,
                          test_image_path,
                          token,

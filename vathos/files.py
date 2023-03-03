@@ -42,8 +42,7 @@ def get_file(file_id, token):
   Returns:
     BytesIO: byte representation of the file
   """
-  http_request = requests.get('https://staging.api.gke.vathos.net/v1/blobs/' +
-                              file_id,
+  http_request = requests.get(f'{BASE_URL}/blobs/{file_id}',
                               headers={'Authorization': 'Bearer ' + token},
                               stream=True)
   http_request.raw.decode_content = True

@@ -89,9 +89,6 @@ def visualize_detections(detections,
     mesh.apply_scale(UNIT_CONVERSION_FACTOR[product['unit']])
     meshes.append(mesh)
 
-  #mesh = trimesh.load(model_file_name, file_type='OBJ', color=(0.5, 0.5, 0.5))
-  #mesh.apply_scale(UNIT_CONVERSION_FACTOR[unit])
-
   depth_img_compressed = imread(test_image_path)
   pcl = backproject(0.001 * unpack_short(depth_img_compressed),
                     projection_matrix)

@@ -125,3 +125,30 @@ def get_product(product_id, token):
                                   headers={'Authorization': 'Bearer ' + token},
                                   timeout=5)
   return product_response.json()
+
+
+def list_products(token, verbose=False):
+  """Lists all exisiting products
+
+  Args:
+    token (str): API access token
+    verbose (bool): whether to return all fields (or just name+id)
+
+  Returns:
+    list: product data
+  """
+  products_response = requests.get(f'{BASE_URL}/products/',
+                                  headers={'Authorization': 'Bearer ' + token},
+                                  timeout=5)
+  all_products = products_response.json()
+  if verbose:
+    output_products = all_products
+  else:
+    output_products = []
+    for product_entry in all_products:
+      product = {
+          'product_name': product_entry['name'],
+          'product_id': product_entry['_id'],
+      }
+      output_products.append(product)
+  return output_products

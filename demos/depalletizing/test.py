@@ -25,13 +25,13 @@ if __name__ == '__main__':
   with open('./demos/depalletizing/product.pickle', 'rb') as fid:
     product_id = pickle.load(fid)
 
-  detections = run_inference(product_id, './demos/depalletizing/test.png',
-                             token)
+  detections = run_inference(product_id,
+                             './demos/depalletizing/test.png',
+                             token,
+                             score_threshold=0.9999,
+                             refine_detections=True)
 
-  projection_matrix = np.array(
-      [[1779.80041, 0, 986.39929], [0, 1782.1018, 597.44458], [0, 0, 1]],
-      dtype='f')
-
-  visualize_detections('./demos/depalletizing/cad_model.obj', 'mm',
-                       './demos/depalletizing/test.png', projection_matrix,
-                       detections)
+  visualize_detections(detections,
+                       './demos/depalletizing/test.png',
+                       token,
+                       fitness_threshold=0.9)

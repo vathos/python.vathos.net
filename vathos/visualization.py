@@ -12,6 +12,9 @@ import logging
 
 import numpy as np
 
+from vathos.products import get_product
+from vathos.files import get_file
+
 try:
   from imageio import imread
   import mayavi.mlab as mlab
@@ -23,6 +26,7 @@ except ImportError:
 
 # conversion to meters
 UNIT_CONVERSION_FACTOR = {'mm': 0.001, 'cm': 0.01, 'dm': 0.1, 'm': 1.0}
+
 
 def unpack_short(rgb):
   """Unpacks two byte channels into a single channel of type short."""
@@ -49,8 +53,12 @@ def backproject(depth, K):
   return pcl
 
 
-def visualize_detections(model_file_name, unit, test_image_path,
-                         projection_matrix, detections):
+#def visualize_detections(model_file_name, unit, test_image_path,
+#                         projection_matrix, detections):
+def visualize_detections(detections,
+                         test_image_path,
+                         token,
+                         fitness_threshold=0.7):
   """Visualizes a point cloud and detections.
   
   This function is only executed if mayavi and trimesh are installed.
@@ -69,21 +77,46 @@ def visualize_detections(model_file_name, unit, test_image_path,
     logging.warning('Visualization is disabled.')
     return
 
-  mesh = trimesh.load(model_file_name, file_type='OBJ', color=(0.5, 0.5, 0.5))
-  mesh.apply_scale(UNIT_CONVERSION_FACTOR[unit])
+  product = get_product(detections['product_id'], token)
+  projection_matrix = np.reshape(np.array(product['camera']['intrinsics']),
+                                 (3, 3), 'F')
+
+  meshes = []
+  for obj_model in product['models']:
+    mesh = trimesh.load(get_file(obj_model, token),
+                        file_type='OBJ',
+                        color=(0.5, 0.5, 0.5))
+    mesh.apply_scale(UNIT_CONVERSION_FACTOR[product['unit']])
+    meshes.append(mesh)
+
+  #mesh = trimesh.load(model_file_name, file_type='OBJ', color=(0.5, 0.5, 0.5))
+  #mesh.apply_scale(UNIT_CONVERSION_FACTOR[unit])
 
   depth_img_compressed = imread(test_image_path)
-
   pcl = backproject(0.001 * unpack_short(depth_img_compressed),
                     projection_matrix)
 
-  mlab.figure()
+  mlab.figure("Vathos: Cloud Inference",
+              bgcolor=(0.0, 0.0666, 0.1137),
+              size=(800, 600))
   mlab.points3d(pcl[:, 0], pcl[:, 1], pcl[:, 2], mode='point')
 
-  for detection in detections:
+  for detection in detections['detections']:
 
     # frame is missing from the object if ICP has failed
-    if 'frame' in detection:
+    if 'frame' in detection and detection.get('fitness',
+                                              1.0) > fitness_threshold:
+      # might want to use a differrent color for low fitness detections later
+      mesh_color = (0.5, 0.6, 0.7)
+      # read class and center, depending on use of ICP
+      if 'detection' in detection:
+        detection_class = detection['detection']['class']
+        detection_center = detection['detection']['center']
+      else:
+        detection_class = detection['class']
+        detection_center = detection['center']
+      mesh = meshes[int(product['class2product'][str(detection_class)])]
+
       # pose is in camera coordinates
       pose = np.reshape(np.array(detection['frame'], dtype='f'), (4, 4), 'F')
       vertices = mesh.vertices @ pose[0:3, 0:3].transpose() + np.ones(
@@ -93,7 +126,14 @@ def visualize_detections(model_file_name, unit, test_image_path,
                            vertices[:, 1],
                            vertices[:, 2],
                            mesh.faces,
-                           color=(0.6, 0.2, 0.2),
+                           color=mesh_color,
                            opacity=0.5)
+      if detection.get('fitness', False):
+        mlab.text3d(x=detection_center[0],
+                    y=detection_center[1],
+                    z=detection_center[2],
+                    text="{:.2f}".format(detection['fitness']),
+                    color=(0.1, 0.9, 0.1),
+                    scale=0.01)
 
   mlab.show()

@@ -130,7 +130,7 @@ def visualize_detections(detections,
                     y=detection_center[1],
                     z=detection_center[2],
                     text="{:.2f}".format(detection['fitness']),
-                    color=(0.1, 0.9, 0.1),
+                    color=(0.95, 0.71, 0.25),
                     scale=0.01)
 
   mlab.show()

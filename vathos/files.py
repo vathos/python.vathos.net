@@ -8,6 +8,8 @@
 ################################################################################
 """File operations."""
 
+from io import BytesIO
+
 import requests
 
 from vathos import BASE_URL
@@ -30,3 +32,19 @@ def upload_files(file_list, token):
                                   headers={'Authorization': f'Bearer {token}'},
                                   timeout=120)
   return upload_response.json()
+
+def get_file(file_id, token):
+  """Downloads a file from the REST API.
+
+  Args:
+  file_id (str): id of the file to get
+
+  Returns:
+    BytesIO: byte representation of the file
+  """
+  http_request = requests.get(f'{BASE_URL}/blobs/{file_id}',
+                              headers={'Authorization': 'Bearer ' + token},
+                              stream=True)
+  http_request.raw.decode_content = True
+
+  return BytesIO(http_request.content)

@@ -71,7 +71,11 @@ def train_product(product_id, calibration_image_path, token, device_id=None):
   return post_task_response.json()['_id']
 
 
-def run_inference(product_id, test_image_path, token):
+def run_inference(product_id,
+                  test_image_path,
+                  token,
+                  score_threshold=0.9999,
+                  refine_detections=True):
   """Runs an inference request.
   
   Args: 
@@ -91,6 +95,11 @@ def run_inference(product_id, test_image_path, token):
   product = get_product(product_id, token)
   configuration = get_configuration(product_id, 'votenet.workflows.vathos.net',
                                     token)
+  # overwrite config values with function parameters
+  configuration['metric']['conf_thresh'] = score_threshold
+  configuration['refine_detections'] = refine_detections
+  configuration['icp']['window_size'] = 2000
+  configuration['icp']['num_points_icp'] = 50000
 
   # get depth image for visualization purposes and convert to m
   inference_url = f'{BASE_URL}/workflows/votenet'
@@ -113,4 +122,4 @@ def run_inference(product_id, test_image_path, token):
 
   response_json = inference_response.json()
 
-  return response_json['detections']
+  return {"product_id": product_id, "detections": response_json['detections']}

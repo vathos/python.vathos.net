@@ -9,12 +9,13 @@
 - [numpy](https://numpy.org/)
 - [mayavi](https://docs.enthought.com/mayavi/mayavi/) (optional)
 - [trimesh](https://trimsh.org/trimesh.html) (optional)
+- [imageio](https://imageio.readthedocs.io/en/stable/) (optional)
 
 Note that if you would like to make use of the optional visualization modules,
-you will have to resolve the latter two dependencies manually:
+you will have to resolve the latter three dependencies manually:
 
 ```
-pip install pyqt5 mayavi trimesh
+pip install pyqt5 mayavi trimesh imageio
 ```
 
 ### Build from source

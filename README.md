@@ -11,13 +11,6 @@
 - [trimesh](https://trimsh.org/trimesh.html) (optional)
 - [imageio](https://imageio.readthedocs.io/en/stable/) (optional)
 
-Note that if you would like to make use of the optional visualization modules,
-you will have to resolve the latter three dependencies manually:
-
-```
-pip install pyqt5 mayavi trimesh imageio
-```
-
 ### Build from source
 
 To get a nightly build, first, clone this repository:
@@ -44,6 +37,13 @@ The latest official version of the library is available on PyPi and can be insta
 
 ```bash
 pip install vathos
+```
+
+Note that if you would like to make use of the optional visualization modules,
+you will have to make that explicit by calling:
+
+```bash
+pip install vathos[visualization]
 ```
 
 ## Quick start

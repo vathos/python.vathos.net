@@ -15,7 +15,7 @@ import requests
 from vathos import BASE_URL
 
 
-def upload_files(file_list, token):
+def upload_files(file_list, token, sync=False, device=None):
   """Uploads one or multiple files.
   
   Args:
@@ -27,7 +27,13 @@ def upload_files(file_list, token):
   upload_body = {}
   for i, file in enumerate(file_list):
     upload_body[f'file_{str(i).zfill(2)}'] = open(file, 'rb')
-  upload_response = requests.post(f'{BASE_URL}/blobs',
+  if sync:
+    url = f'{BASE_URL}/syncblobs'
+  elif device is None:
+    url = f'{BASE_URL}/blobs'
+  else:
+    url = f'{BASE_URL}/syncblobs/{device}'
+  upload_response = requests.post(url,
                                   files=upload_body,
                                   headers={'Authorization': f'Bearer {token}'},
                                   timeout=120)

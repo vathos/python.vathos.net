@@ -42,8 +42,8 @@ def create_product(name, model_file_name, unit, projection_matrix, image_size,
   if unit not in ALLOWED_UNITS:
     raise LookupError('Unknown unit')
 
-  # upload model file
-  model_id = upload_files([model_file_name], token)[0]
+  # upload model file (globally synced)
+  model_id = upload_files([model_file_name], token, sync=True)[0]
 
   # create camera
   post_camera_response = requests.post(

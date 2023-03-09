@@ -38,8 +38,9 @@ def train_product(product_id, calibration_image_path, token, device_id=None):
     str: id of the training task
     
   """
-  # upload calib image id
-  calib_image = upload_files([calibration_image_path], token)[0]
+  # upload calib image id (synced to device, if available)
+  calib_image = upload_files([calibration_image_path], token,
+                             device=device_id)[0]
 
   train_data = {
       'workflow':

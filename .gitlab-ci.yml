@@ -14,7 +14,7 @@ build_amd64_release:
     - sed -i s/0.0.0-latest/$CI_COMMIT_TAG/g ./setup
     - sed -i s/0.0.0-latest/$CI_COMMIT_TAG/g ./vathos/__init__.py
     - ./setup clean
-    - ./setup sdist bdist_wheel --plat-name manylinux1_x86_64
+    - ./setup sdist bdist_wheel --plat-name any
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --verbose --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*.whl
   artifacts:
     expire_in: never

@@ -42,12 +42,18 @@ Starts a training.
 
 ---
 
-<a href="../vathos/services/depalletizing.py#L74"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../vathos/services/depalletizing.py#L75"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `run_inference`
 
 ```python
-run_inference(product_id, test_image_path, token)
+run_inference(
+    product_id,
+    test_image_path,
+    token,
+    score_threshold=0.9999,
+    refine_detections=True
+)
 ```
 
 Runs an inference request. 

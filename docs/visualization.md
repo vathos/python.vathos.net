@@ -12,7 +12,7 @@ Visualization.
 
 ---
 
-<a href="../vathos/visualization.py#L27"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../vathos/visualization.py#L31"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `unpack_short`
 
@@ -25,7 +25,7 @@ Unpacks two byte channels into a single channel of type short.
 
 ---
 
-<a href="../vathos/visualization.py#L32"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../vathos/visualization.py#L36"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `backproject`
 
@@ -38,18 +38,12 @@ Backprojects a depth image into a point cloud.
 
 ---
 
-<a href="../vathos/visualization.py#L52"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../vathos/visualization.py#L56"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `visualize_detections`
 
 ```python
-visualize_detections(
-    model_file_name,
-    unit,
-    test_image_path,
-    projection_matrix,
-    detections
-)
+visualize_detections(detections, test_image_path, token, fitness_threshold=0.7)
 ```
 
 Visualizes a point cloud and detections. 

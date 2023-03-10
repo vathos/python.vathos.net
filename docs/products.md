@@ -75,3 +75,29 @@ Downloads product data.
  - <b>`dict`</b>:  product data 
 
 
+---
+
+<a href="../vathos/products.py#L130"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+
+## <kbd>function</kbd> `list_products`
+
+```python
+list_products(token, verbose=False)
+```
+
+Lists all exisiting products 
+
+
+
+**Args:**
+ 
+ - <b>`token`</b> (str):  API access token 
+ - <b>`verbose`</b> (bool):  whether to return all fields (or just name+id) 
+
+
+
+**Returns:**
+ 
+ - <b>`list`</b>:  product data 
+
+

@@ -7,9 +7,9 @@
 - [Python](https://www.python.org/) version 3.8 or higher
 - [requests](https://requests.readthedocs.io/en/latest/)
 - [numpy](https://numpy.org/)
+- [imageio](https://imageio.readthedocs.io/en/stable/)
 - [mayavi](https://docs.enthought.com/mayavi/mayavi/) (optional)
 - [trimesh](https://trimsh.org/trimesh.html) (optional)
-- [imageio](https://imageio.readthedocs.io/en/stable/) (optional)
 
 ### Build from source
 

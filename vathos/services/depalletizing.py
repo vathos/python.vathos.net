@@ -17,6 +17,7 @@ from vathos import BASE_URL
 from vathos.products import get_product
 from vathos.configurations import get_configuration
 from vathos.files import upload_files
+from vathos.io.depth import write_to_png_uint8_buffer
 
 
 def train_product(product_id, calibration_image_path, token, device_id=None):
@@ -73,7 +74,7 @@ def train_product(product_id, calibration_image_path, token, device_id=None):
 
 
 def run_inference(product_id,
-                  test_image_path,
+                  test_image,
                   token,
                   score_threshold=0.9999,
                   refine_detections=True):
@@ -83,11 +84,7 @@ def run_inference(product_id,
     product_id (str): id of the product to start the training for. A product
       is created with the function `create_product()` from the module
       `vathos.products`.
-    test_image_path (str): path of image to run inference on. This image
-    must measure the depth of each pixe in millimeters, where each pixel is
-    stored as a short integer, whose LSB and MSB are packed into the red
-    respectively green channel of an 8-bit RGB image before storing it as a
-    PNG-compressed file.
+    test_image (np.ndarray): float32 image representing the depth in meters
     token (str): API access token
 
   Returns:
@@ -104,7 +101,7 @@ def run_inference(product_id,
 
   # get depth image for visualization purposes and convert to m
   inference_url = f'{BASE_URL}/workflows/votenet'
-  files = {'files': open(test_image_path, 'rb')}
+  files = {'files': write_to_png_uint8_buffer(test_image)}
   values = {
       'product': json.dumps(product),
       'configuration': json.dumps(configuration)

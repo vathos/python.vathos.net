@@ -20,27 +20,26 @@ from vathos.files import upload_files
 from vathos.io.depth import write_to_png_uint8_buffer
 
 
-def train_product(product_id, calibration_image_path, token, device_id=None):
+def train_product(product_id, calibration_image, token, device_id=None):
   """Starts a training.
   
   Args: 
     product_id (str): id of the product to start the training for. A product
       is created with the function `create_product()` from the module
       `vathos.products`.
-    calibration_image_path (str): path of an image for extrinsic calibration.
-      The image must be a depth image of the plane the detected objects will
-      rest upon during inference. It is converted to millimeters, then cast to a
-      short integer array whose LSB and MSB are put into the red respectively
-      green channel of an 8-bit RGB image before storing it as a PNG-compressed
-      file.
+    calibration_image (np.ndarray): Depth image of the plane the detected
+      objects will rest upon during inference in meters and floating-point
+      precision.
     token (str): API access token
 
   Returns:
     str: id of the training task
     
   """
+
   # upload calib image id (synced to device, if available)
-  calib_image = upload_files([calibration_image_path], token,
+  calib_image = upload_files([write_to_png_uint8_buffer(calibration_image)],
+                             token,
                              device=device_id)[0]
 
   train_data = {

@@ -16,6 +16,7 @@ import numpy as np
 from vathos.authentication import get_service_account_token
 from vathos.services.depalletizing import run_inference
 from vathos.visualization import visualize_detections
+from vathos.io.depth import read_from_png_uint8
 
 if __name__ == '__main__':
   # authenticate with the API
@@ -25,8 +26,9 @@ if __name__ == '__main__':
   with open('./demos/depalletizing/product.pickle', 'rb') as fid:
     product_id = pickle.load(fid)
 
+  test_image = read_from_png_uint8('./demos/depalletizing/test.png')
   detections = run_inference(product_id,
-                             './demos/depalletizing/test.png',
+                             test_image,
                              token,
                              score_threshold=0.9999,
                              refine_detections=True)

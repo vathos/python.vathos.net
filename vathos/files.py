@@ -19,14 +19,19 @@ def upload_files(file_list, token, sync=False, device=None):
   """Uploads one or multiple files.
   
   Args:
-    file_list (list): list of paths of files on disk to upload
+    file_list (list): list of file-like objects or paths
 
   Returns:
     list: meta data objects of uploaded files
   """
   upload_body = {}
   for i, file in enumerate(file_list):
-    upload_body[f'file_{str(i).zfill(2)}'] = open(file, 'rb')
+    if isinstance(file, str):
+      # process an image path on disk
+      upload_body[f'file_{str(i).zfill(2)}'] = open(file, 'rb')
+    else:
+      # process file-like object
+      upload_body[f'file_{str(i).zfill(2)}'] = file
   if sync:
     url = f'{BASE_URL}/syncblobs'
   elif device is None:

@@ -16,6 +16,7 @@ import numpy as np
 from vathos.authentication import get_service_account_token
 from vathos.products import create_product
 from vathos.services.depalletizing import train_product
+from vathos.io.depth import read_from_png_uint8
 
 if __name__ == '__main__':
   # authenticate with the API
@@ -38,5 +39,9 @@ if __name__ == '__main__':
   with open('product.pickle', 'wb') as fid:
     pickle.dump(product_id, fid)
 
+  # read a calibration depth image from disk
+  calibration_image = read_from_png_uint8(
+      './demos/depalletizing/calibration.png')
+
   # start training
-  train_product(product_id, './demos/depalletizing/calibration.png', token)
+  train_product(product_id, calibration_image, token)

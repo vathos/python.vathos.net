@@ -7,6 +7,7 @@
 #
 ################################################################################
 
+from io import BufferedReader
 import json
 import logging
 from time import perf_counter
@@ -36,11 +37,10 @@ def train_product(product_id, calibration_image, token, device_id=None):
     str: id of the training task
     
   """
-
   # upload calib image id (synced to device, if available)
-  calib_image = upload_files([write_to_png_uint8_buffer(calibration_image)],
-                             token,
-                             device=device_id)[0]
+  file_data = ('depth.png', write_to_png_uint8_buffer(calibration_image),
+               'image/png', {})
+  calib_image = upload_files([file_data], token, device=device_id)[0]
 
   train_data = {
       'workflow':
@@ -100,7 +100,7 @@ def run_inference(product_id,
 
   # get depth image for visualization purposes and convert to m
   inference_url = f'{BASE_URL}/workflows/votenet'
-  files = {'files': write_to_png_uint8_buffer(test_image)}
+  files = {'files': BufferedReader(write_to_png_uint8_buffer(test_image))}
   values = {
       'product': json.dumps(product),
       'configuration': json.dumps(configuration)
@@ -116,6 +116,8 @@ def run_inference(product_id,
 
   toc = perf_counter()
   logging.info('Inference took %f s', toc - tic)
+
+  inference_response.raise_for_status()
 
   response_json = inference_response.json()
 

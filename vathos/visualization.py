@@ -54,7 +54,7 @@ def backproject(depth, K):
 
 
 def visualize_detections(detections,
-                         test_image_path,
+                         test_image,
                          token,
                          fitness_threshold=0.7):
   """Visualizes a point cloud and detections.
@@ -66,7 +66,7 @@ def visualize_detections(detections,
       supported format is Wavefront OBJ.
     unit (str): unit in which the CAD model is meaured. Must be one of
       `['m', 'dm', 'cm', 'mm']`.
-    test_image_path (str): path of the depth image used in inference
+    test_image (np.ndarray): depth image used in inference
     projection_matrix (numpy.ndarray): a $3\\times 3$ projection matrix of the 
       used camera
     detections (list): inferred object poses      
@@ -87,9 +87,7 @@ def visualize_detections(detections,
     mesh.apply_scale(UNIT_CONVERSION_FACTOR[product['unit']])
     meshes.append(mesh)
 
-  depth_img_compressed = imread(test_image_path)
-  pcl = backproject(0.001 * unpack_short(depth_img_compressed),
-                    projection_matrix)
+  pcl = backproject(test_image, projection_matrix)
 
   mlab.figure("Vathos: Cloud Inference",
               bgcolor=(0.0, 0.0666, 0.1137),

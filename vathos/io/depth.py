@@ -57,6 +57,8 @@ def write_to_png_uint8_buffer(depth):
   depth_in_mm = 1000 * depth.astype('f')
   uncompressed_image = pack_short(depth_in_mm.astype('uint16'))
   imwrite(buffer, uncompressed_image, format='png')
+  buffer.name = 'depth.png'
+  buffer.seek(0)
   return buffer
 
 

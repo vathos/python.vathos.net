@@ -34,6 +34,6 @@ if __name__ == '__main__':
                              refine_detections=True)
 
   visualize_detections(detections,
-                       './demos/depalletizing/test.png',
+                       test_image,
                        token,
                        fitness_threshold=0.9)

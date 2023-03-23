@@ -147,8 +147,8 @@ def list_products(token, verbose=False):
     output_products = []
     for product_entry in all_products:
       product = {
-          'product_name': product_entry['name'],
-          'product_id': product_entry['_id'],
+          'name': product_entry['name'],
+          '_id': product_entry['_id'],
       }
       output_products.append(product)
   return output_products

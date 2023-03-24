@@ -6,6 +6,7 @@
 # All rights reserved.
 #
 ################################################################################
+"""Methods to train and run models for depalletizing."""
 
 from io import BufferedReader
 import json
@@ -23,8 +24,8 @@ from vathos.io.depth import write_to_png_uint8_buffer
 
 def train_product(product_id, calibration_image, token, device_id=None):
   """Starts a training.
-  
-  Args: 
+
+  Args:
     product_id (str): id of the product to start the training for. A product
       is created with the function `create_product()` from the module
       `vathos.products`.
@@ -35,7 +36,7 @@ def train_product(product_id, calibration_image, token, device_id=None):
 
   Returns:
     str: id of the training task
-    
+
   """
   # upload calib image id (synced to device, if available)
   file_data = ('depth.png', write_to_png_uint8_buffer(calibration_image),
@@ -78,8 +79,8 @@ def run_inference(product_id,
                   score_threshold=0.9999,
                   refine_detections=True):
   """Runs an inference request.
-  
-  Args: 
+
+  Args:
     product_id (str): id of the product to start the training for. A product
       is created with the function `create_product()` from the module
       `vathos.products`.
@@ -87,7 +88,7 @@ def run_inference(product_id,
     token (str): API access token
 
   Returns:
-    list: detected objects  
+    list: detected objects
   """
   product = get_product(product_id, token)
   configuration = get_configuration(product_id, 'votenet.workflows.vathos.net',

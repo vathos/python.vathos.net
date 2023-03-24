@@ -16,7 +16,6 @@ from vathos.products import get_product
 from vathos.files import get_file
 
 try:
-  from imageio import imread
   import mayavi.mlab as mlab
   import trimesh
   VISUALIZATION_ENABLED = True
@@ -26,11 +25,6 @@ except ImportError:
 
 # conversion to meters
 UNIT_CONVERSION_FACTOR = {'mm': 0.001, 'cm': 0.01, 'dm': 0.1, 'm': 1.0}
-
-
-def unpack_short(rgb):
-  """Unpacks two byte channels into a single channel of type short."""
-  return rgb[:, :, 0] + 256 * rgb[:, :, 1]
 
 
 def backproject(depth, K):
@@ -53,12 +47,29 @@ def backproject(depth, K):
   return pcl
 
 
-def visualize_detections(detections,
-                         test_image,
-                         token,
-                         fitness_threshold=0.7):
+def get_product_meshes(product, token):
+  """ Loads the meshes of a product.
+
+    Args:
+    product: the product dict, including models and unit
+    token: Authentication token
+
+    Returns:
+    meshes: list of the product meshes
+  """
+  meshes = []
+  for obj_model in product['models']:
+    mesh = trimesh.load(get_file(obj_model, token),
+                        file_type='OBJ',
+                        color=(0.5, 0.5, 0.5))
+    mesh.apply_scale(UNIT_CONVERSION_FACTOR[product['unit']])
+    meshes.append(mesh)
+  return meshes
+
+
+def visualize_detections(detections, test_image, token, fitness_threshold=0.7):
   """Visualizes a point cloud and detections.
-  
+
   This function is only executed if mayavi and trimesh are installed.
 
   Args:
@@ -67,9 +78,9 @@ def visualize_detections(detections,
     unit (str): unit in which the CAD model is meaured. Must be one of
       `['m', 'dm', 'cm', 'mm']`.
     test_image (np.ndarray): depth image used in inference
-    projection_matrix (numpy.ndarray): a $3\\times 3$ projection matrix of the 
+    projection_matrix (numpy.ndarray): a $3\\times 3$ projection matrix of the
       used camera
-    detections (list): inferred object poses      
+    detections (list): inferred object poses
   """
   if not VISUALIZATION_ENABLED:
     logging.warning('Visualization is disabled.')
@@ -79,13 +90,7 @@ def visualize_detections(detections,
   projection_matrix = np.reshape(np.array(product['camera']['intrinsics']),
                                  (3, 3), 'F')
 
-  meshes = []
-  for obj_model in product['models']:
-    mesh = trimesh.load(get_file(obj_model, token),
-                        file_type='OBJ',
-                        color=(0.5, 0.5, 0.5))
-    mesh.apply_scale(UNIT_CONVERSION_FACTOR[product['unit']])
-    meshes.append(mesh)
+  meshes = get_product_meshes(product, token)
 
   pcl = backproject(test_image, projection_matrix)
 
@@ -125,8 +130,71 @@ def visualize_detections(detections,
         mlab.text3d(x=detection_center[0],
                     y=detection_center[1],
                     z=detection_center[2],
-                    text="{:.2f}".format(detection['fitness']),
+                    text=f"{detection['fitness']:.2f}",
                     color=(0.95, 0.71, 0.25),
                     scale=0.01)
 
+  mlab.show()
+
+
+def visualize_product_states(product_id, token):
+  """Visualizes the stable states of a product.
+
+  This function is only executed if mayavi and trimesh are installed.
+
+  Args:
+    product_id: the id of the product to visualize
+    token: Authentication token
+  """
+  if not VISUALIZATION_ENABLED:
+    logging.warning('Visualization is disabled.')
+    return
+
+  # setup product and visualization information
+  product = get_product(product_id, token)
+  states = product['states']
+  meshes = get_product_meshes(product, token)
+
+  mlab.figure("Vathos: Product States",
+              bgcolor=(0.0, 0.0666, 0.1137),
+              size=(800, 600))
+  mesh_color = (0.5, 0.6, 0.7)
+  max_dims = np.max(np.array([state['meanSize'] for state in product['states']
+                             ]),
+                    axis=0)
+
+  # plane primitive
+  plane_x, plane_y = np.meshgrid([
+      -max_dims[0] / 2 - 0.01, max_dims[0] * 1.2 *
+      (len(states) - 1) + max_dims[0] / 2 + 0.01
+  ], [-max_dims[1] / 2 - 0.01, max_dims[1] / 2 + 0.01])
+  plane_z = np.zeros_like(plane_x)
+  mlab.mesh(plane_x, plane_y, plane_z, color=(0.8, 0.8, 0.8))
+
+  for idx, state in enumerate(states):
+
+    mesh = meshes[int(product['class2product'][str(idx)])]
+
+    # apply stable state and position
+    state2obj = np.reshape(np.array(state['frame'], dtype='f'), (4, 4), 'F')
+    state2plane = np.eye(4, dtype='f')
+    state2plane[0, 3] = (idx * max_dims[0] * 1.2)
+    state2plane[2, 3] = (state['meanSize'][2] / 2)
+    obj2plane = np.matmul(state2plane, np.linalg.inv(state2obj))
+    vertices = mesh.vertices @ obj2plane[0:3, 0:3].transpose() + np.ones(
+        mesh.vertices.shape) @ np.diag(obj2plane[0:3, 3])
+
+    mlab.triangular_mesh(vertices[:, 0],
+                         vertices[:, 1],
+                         vertices[:, 2],
+                         mesh.faces,
+                         color=mesh_color,
+                         opacity=1.0)
+
+    mlab.text3d(x=obj2plane[0, 3],
+                y=obj2plane[1, 3],
+                z=obj2plane[2, 3],
+                text=f"state {idx}",
+                color=(0.95, 0.71, 0.25),
+                scale=0.02)
   mlab.show()

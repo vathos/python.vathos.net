@@ -22,14 +22,14 @@ ALLOWED_UNITS = ['m', 'dm', 'cm', 'mm']
 def create_product(name, model_file_name, unit, projection_matrix, image_size,
                    image_range, token):
   """Creates a product and attaches a 3d model file and camera to it.
-  
+
   Args:
     name (str): human-readable name for the new product
     model_file_name (str): path to a CAD model file on disk. Currently, the only
       supported format is Wavefront OBJ.
     unit (str): unit in which the CAD model is meaured. Must be one of
       `['m', 'dm', 'cm', 'mm']`.
-    projection_matrix (numpy.ndarray): a $3\\times 3$ projection matrix of the 
+    projection_matrix (numpy.ndarray): a $3\\times 3$ projection matrix of the
       used camera
     image_size (tuple): image width and height in number of pixels
     image_range: (tuple): minimal and maximal depths captured with the camera in
@@ -111,7 +111,7 @@ def create_product(name, model_file_name, unit, projection_matrix, image_size,
 
 def get_product(product_id, token):
   """Downloads product data.
-  
+
   Args:
     product_id (str): product id
     token (str): API access token

@@ -25,7 +25,7 @@ Uploads one or multiple files.
 
 **Args:**
  
- - <b>`file_list`</b> (list):  list of paths of files on disk to upload 
+ - <b>`file_list`</b> (list):  list of file-like objects or paths 
 
 
 
@@ -36,7 +36,7 @@ Uploads one or multiple files.
 
 ---
 
-<a href="../vathos/files.py#L42"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../vathos/files.py#L47"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `get_file`
 

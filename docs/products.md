@@ -37,7 +37,7 @@ Creates a product and attaches a 3d model file and camera to it.
  - <b>`name`</b> (str):  human-readable name for the new product 
  - <b>`model_file_name`</b> (str):  path to a CAD model file on disk. Currently, the only  supported format is Wavefront OBJ. 
  - <b>`unit`</b> (str):  unit in which the CAD model is meaured. Must be one of  `['m', 'dm', 'cm', 'mm']`. 
- - <b>`projection_matrix`</b> (numpy.ndarray):  a $3\times 3$ projection matrix of the   used camera 
+ - <b>`projection_matrix`</b> (numpy.ndarray):  a $3\times 3$ projection matrix of the  used camera 
  - <b>`image_size`</b> (tuple):  image width and height in number of pixels 
  - <b>`image_range`</b>:  (tuple): minimal and maximal depths captured with the camera in  meters 
  - <b>`token`</b> (str):  API access token 
